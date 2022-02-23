@@ -1,48 +1,20 @@
 @section('sidebar')
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <h3>Sidebar</h3>
-        </div>
-
-        <ul class="list-unstyled components">
-            <p>Dummy Heading</p>
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Portfolio</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-        </ul>
-    </nav>
+    <div id="sidebar_wrapper">
+        <nav id="sidebar" class='animated bounceInDown bg-dark'>
+            <ul>
+                <li style="padding: 10px;">Welcome, </li>
+                <li><a href='/admin/users'>Users</a></li>
+                <li class='sub-menu'><a href='#posts'>Posts<div class='fa fa-caret-down right'></div></a>
+                    <ul>
+                        <li><a href='/posts'>All</a></li>
+                        <li><a href='/posts/publish'>publish</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a id="logoutBtn" href='#logout'>Logout</a>
+                    <form id="logoutForm" method="POST" action="/logout"></form>
+                </li>
+            </ul>
+        </nav>
+    </div>
 @show
