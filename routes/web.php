@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,19 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+
+Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
+    Route::get('/', function () {
+        return redirect()->route('auth.login');
+    });
+    Route::get('login', function () {
+        return view('auth.login');
+    })->name('login');
+    Route::post('login',[AuthController::class,'postLogin'])->name('loginPost');
+    Route::post('logout',[AuthController::class,'postLogout'])->name('logoutPost');
 });
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {

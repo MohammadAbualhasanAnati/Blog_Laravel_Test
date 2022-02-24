@@ -16,10 +16,12 @@ class admin
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
-        // if (auth()->user()->status == 'active') {
-        //     return $next($request);
-        // }
-        // return response()->json('Your account is inactive');
+        if(!auth()->check()){
+            return redirect()->intended('auth/login');
+        }
+        if (auth()->user()->type=='admin') {
+            return $next($request);
+        }
+        return response()->json('Your account is not autherized!');
     }
 }
