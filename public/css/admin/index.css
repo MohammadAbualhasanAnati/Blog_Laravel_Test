@@ -4,6 +4,10 @@
     align-items: stretch;
 }
 
+.container{
+    text-align: center;
+}
+
 #sidebar_wrapper {
     height: 100vh;
     background-color: #6e7375;

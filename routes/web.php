@@ -34,5 +34,6 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
 });
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
-    Route::resource('/', AdminController::class);
+    Route::get('/', [AdminController::class,'index']);
+    Route::get('/users', [AdminController::class,'users']);
 });
