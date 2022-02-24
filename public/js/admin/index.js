@@ -4,7 +4,8 @@ $(document).ready(function(){
 })
 
 let events=()=>{
-    $("#logoutBtn").click(()=>{
+    $("#logoutBtn").click((e)=>{
+        e.preventDefault();
         $("#logoutForm").submit()
     })
 }
