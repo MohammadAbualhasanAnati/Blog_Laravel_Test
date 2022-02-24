@@ -7,6 +7,6 @@
 
 
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-<link href="{{ asset('css/admin/index.css') }}" rel="stylesheet">
+<link href="{{ asset('css/layouts/general.css') }}" rel="stylesheet">
 <script src="{{ asset('js/app.js') }}" rel="stylesheet"></script>
-<script src="{{ asset('js/admin/index.js') }}" rel="stylesheet"></script>
+<script src="{{ asset('js/layouts/general.js') }}" rel="stylesheet"></script>

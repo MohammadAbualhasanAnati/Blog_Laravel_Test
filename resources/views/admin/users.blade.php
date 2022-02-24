@@ -1,4 +1,4 @@
-@extends('admin.layout.index')
+@extends('layouts.general.index')
  
 @section('title', 'Admin Panel')
  
