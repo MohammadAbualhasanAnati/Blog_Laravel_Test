@@ -15,15 +15,16 @@
             justify-content:center;
             align-items:center;
         }
-        #post{
+        .post{
             display:flex;
             flex-direction:column;
             justify-content:center;
             width:80%;
             padding:50px;
             min-height:500px;
+            background-color:#F76E11;
         }
-        #post .card-body{
+        .post .card-body{
             display:flex;
             flex-direction:column;
             justify-content:center;
@@ -39,26 +40,47 @@
         .buttons-container{
             display:flex;
             flex-direction:row;
-            justify-content:space-between;
+            justify-content:center;
             padding-right:10px;
             padding-left:10px;
         }
         .buttons-container button{
-            width:200px;
+            width:60%;
+        }
+        .bootstrap-tagsinput .tag {
+            background: gray;
+            border: 1px solid black;
+            padding: 0 6px;
+            margin-right: 2px;
+            color: white;
+            border-radius: 4px;
+        }
+        .post .bootstrap-tagsinput{
+            width:100%;
         }
     </style>
 @endsection
 
+@section('scripts')
+        <script>
+            $(document).ready(function(){
+                var categoriesInput = $("input[name=categories]").tagsinput('input');
+                categoriesInput.addClass('form-control');
+                categoriesInput.attr('name','categories');
+            })
+        </script>
+@endsection
+
 @section('content')
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         @csrf
-        <div id="post" class="card">
+        <div class="post" class="card">
             <div class="card-body">
                 @if($success)
                     <p class="alert alert-success">{{ $success }}</p>
                 @endif
                 <h5 class="card-title">Add a post</h5>
-                
+                <br/>
                 <h6 class="card-subtitle mb-2 text-muted">Title</h6>
                 @if ($errors->has('title'))
                     <span class="text-danger">{{ $errors->first('title') }}</span>
@@ -73,14 +95,20 @@
                 <p class="card-text">
                     <textarea name="body" class="post-textarea" placeholder="Write something here..."></textarea>
                     <br/>
+                    <br/>
+                    <label class="form-label text-muted">Categories </label>
+                    <br/>
+                    <input name="categories" data-role="tagsinput" type="text" />
                     <p>
-                        <label class="form-label">Post Image  </label>
+                        <label class="form-label text-muted">Post Image  </label>
+                        @if ($errors->has('image'))
+                            <span class="text-danger">{{ $errors->first('image') }}</span>
+                        @endif
                         <input name="image" type="file" class="form-control" />
                     </p>
                 </p>
                 <div class="buttons-container">
-                    <button type="submit" class="btn btn-primary">Post</a>
-                    <button type="button" class="btn btn-primary">Cancel</button>
+                    <button type="submit" class="btn btn-secondary">Post</a>
                 </div>
             </div>
         </div>
