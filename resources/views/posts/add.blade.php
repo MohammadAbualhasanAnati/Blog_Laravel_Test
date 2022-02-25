@@ -64,7 +64,7 @@
                     <span class="text-danger">{{ $errors->first('title') }}</span>
                 @endif
                 <input name="title" class="form-control" placeholder="Title goes here..." />
-                
+                <br />
 
                 <h6 class="card-subtitle mb-2 text-muted">What is in your mind?</h6>
                 @if ($errors->has('title'))
