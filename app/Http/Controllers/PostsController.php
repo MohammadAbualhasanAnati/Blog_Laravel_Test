@@ -14,7 +14,7 @@ class PostsController extends Controller
     }
 
     public function add(){
-        return view('posts.add');
+        return view('posts.add',['success'=>null]);
     }
     public function postAdd(Request $request){
         $validated = $request->validate([
@@ -23,10 +23,6 @@ class PostsController extends Controller
         ]);
         if($validated){
             $post=Post::create($request->all());
-            if($request->has('image')){
-                $post->addMedia($request->file('image'))->toMediaCollection('images');
-                $post->save();
-            }
             return view('posts.add')->with(['success'=>"The post is added successfully!"]);
         }
         return view('posts.add',$validated);
