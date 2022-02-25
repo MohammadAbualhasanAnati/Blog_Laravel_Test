@@ -42,9 +42,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], f
 Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
     Route::get('/', [PostsController::class,'index']);
     Route::get('/add', [PostsController::class,'add']);
-    Route::get('/edit', [PostsController::class,'edit']);
+    Route::get('/view/{id}', [PostsController::class,'viewPost']);
+    Route::get('/edit/{id}', [PostsController::class,'edit']);
 
     Route::post('/add', [PostsController::class,'postAdd']);
-    Route::post('/publish', [PostsController::class,'publish']);
-    Route::delete('/delete', [PostsController::class,'delete']);
+    Route::post('/edit', [PostsController::class,'postEdit']);
+    Route::post('/publish/{id}', [PostsController::class,'publish']);
+    Route::post('/delete/{id}', [PostsController::class,'delete']);
 });

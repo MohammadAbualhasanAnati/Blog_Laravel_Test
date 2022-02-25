@@ -19,6 +19,8 @@ class Post extends Authenticatable implements HasMedia
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'title',
         'body',

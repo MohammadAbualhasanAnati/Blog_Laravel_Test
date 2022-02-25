@@ -64,41 +64,52 @@
 @section('scripts')
         <script>
             $(document).ready(function(){
-                var categoriesInput = $("input[name=categories]").tagsinput('input');
+                var categoriesInput = $("#categories").tagsinput('input');
                 categoriesInput.addClass('form-control');
                 categoriesInput.attr('name','categories');
+                @isset($post)
+                @if($post->categories!=null)
+                    categoriesInput.tagsinput('add','');
+                    @foreach($post->categories as $category)
+                        categoriesInput.tagsinput('add','{{$category}}');
+                    @endforeach
+                @endif
+                @endisset
             })
         </script>
 @endsection
 
 @section('content')
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" action='{{isset($post)?"/posts/edit":"/posts/add"}}' enctype="multipart/form-data">
         @csrf
+        @isset($post)
+            <input name="id" type="hidden" value="{{$post->id}}" />
+        @endisset
         <div class="post" class="card">
             <div class="card-body">
-                @if($success)
+                @isset($success)
                     <p class="alert alert-success">{{ $success }}</p>
-                @endif
-                <h5 class="card-title">Add a post</h5>
+                @endisset
+                <h5 class="card-title">{{isset($post)?"Edit post":"Add a post"}}</h5>
                 <br/>
                 <h6 class="card-subtitle mb-2 text-muted">Title</h6>
                 @if ($errors->has('title'))
                     <span class="text-danger">{{ $errors->first('title') }}</span>
                 @endif
-                <input name="title" class="form-control" placeholder="Title goes here..." />
+                <input name="title" class="form-control" placeholder="Title goes here..." value='{{isset($post)?$post->title:""}}' />
                 <br />
 
                 <h6 class="card-subtitle mb-2 text-muted">What is in your mind?</h6>
-                @if ($errors->has('title'))
-                    <span class="text-danger">{{ $errors->first('title') }}</span>
+                @if ($errors->has('body'))
+                    <span class="text-danger">{{ $errors->first('body') }}</span>
                 @endif
                 <p class="card-text">
-                    <textarea name="body" class="post-textarea" placeholder="Write something here..."></textarea>
+                    <textarea name="body" class="post-textarea" placeholder="Write something here...">{{isset($post)?$post->body:""}}</textarea>
                     <br/>
                     <br/>
                     <label class="form-label text-muted">Categories </label>
                     <br/>
-                    <input name="categories" data-role="tagsinput" type="text" />
+                    <input id="categories" data-role="tagsinput" type="text" />
                     <p>
                         <label class="form-label text-muted">Post Image  </label>
                         @if ($errors->has('image'))
@@ -108,7 +119,7 @@
                     </p>
                 </p>
                 <div class="buttons-container">
-                    <button type="submit" class="btn btn-secondary">Post</a>
+                    <button type="submit" class="btn btn-secondary">{{isset($post)?"Edit":"Post"}}</a>
                 </div>
             </div>
         </div>
