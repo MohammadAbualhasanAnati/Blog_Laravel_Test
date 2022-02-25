@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -23,6 +24,12 @@ class PostsController extends Controller
         ]);
         if($validated){
             $post=Post::create($request->all());
+
+            if($request->hasFile('image') && $request->file('image')->isValid()){
+                $imageName = time().$request->image;  
+                $post->addMediaFromRequest('image')->toMediaCollection('image');
+            }
+            
             return view('posts.add')->with(['success'=>"The post is added successfully!"]);
         }
         return view('posts.add',$validated);
