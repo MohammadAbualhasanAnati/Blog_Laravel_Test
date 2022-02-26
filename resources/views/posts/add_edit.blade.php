@@ -89,13 +89,13 @@
                     @endforeach
                 @endif
             @endisset
-            categoriesInput.attr('name', 'categories');
         })
     </script>
 @endsection
 
 @section('content')
-    <form method="POST" action='{{ isset($post) ? '/posts/edit' : '/posts/add' }}' enctype="multipart/form-data">
+    <form id="postForm" method="POST" action='{{ isset($post) ? '/posts/edit' : '/posts/add' }}'
+        enctype="multipart/form-data">
         @csrf
         @isset($post)
             <input name="id" type="hidden" value="{{ $post->id }}" />
@@ -126,7 +126,7 @@
                     <br />
                     <label class="form-label text-muted">Categories </label>
                     <br />
-                    <input name="categories" id="categories" data-role="tagsinput" type="text" />
+                    <select multiple name="categories" id="categories" data-role="tagsinput" type="text"></select>
                     @if (isset($post->image) && strlen(trim($post->image)) != 0)
                         <br />
                         <br />
