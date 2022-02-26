@@ -103,7 +103,7 @@
                 @endif
                 <br />
                 <div class="footer">
-                    @if (Auth::user()->type == 'admin')
+                    @if (Auth::user() !== null && Auth::user()->type == 'admin')
                         <label
                             class="p-1 mb-2 text-light {{ $post->published ? 'bg-success' : 'bg-dark' }}">{{ $post->published ? 'published' : 'not published' }}</label>
                         <br />

@@ -41,12 +41,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], f
 
 Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
     Route::get('/', [PostsController::class,'index']);
-    Route::get('/add', [PostsController::class,'add']);
-    Route::get('/view/{id}', [PostsController::class,'viewPost']);
-    Route::get('/edit/{id}', [PostsController::class,'edit']);
+    Route::get('/add', [PostsController::class,'add'])->middleware('admin');
+    Route::get('/view/{id}', [PostsController::class,'viewPost'])->middleware('admin');
+    Route::get('/edit/{id}', [PostsController::class,'edit'])->middleware('admin');
 
-    Route::post('/add', [PostsController::class,'postAdd']);
-    Route::post('/edit', [PostsController::class,'postEdit']);
-    Route::post('/publish/{id}', [PostsController::class,'publish']);
-    Route::post('/delete/{id}', [PostsController::class,'delete']);
+    Route::post('/add', [PostsController::class,'postAdd'])->middleware('admin');
+    Route::post('/edit', [PostsController::class,'postEdit'])->middleware('admin');
+    Route::post('/publish/{id}', [PostsController::class,'publish'])->middleware('admin');
+    Route::post('/delete/{id}', [PostsController::class,'delete'])->middleware('admin');
 });
