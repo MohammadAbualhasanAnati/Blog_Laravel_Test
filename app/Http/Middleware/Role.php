@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class admin
+class Role
 {
     /**
      * Handle an incoming request.
@@ -14,14 +14,14 @@ class admin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         if(!auth()->check()){
             return redirect()->intended('auth/login');
         }
-        if (auth()->user()->type=='admin') {
+        if (auth()->user()->authorizeRoles($roles)) {
             return $next($request);
         }
-        return response()->json('Your account is not autherized!');
+        return $next($request);
     }
 }

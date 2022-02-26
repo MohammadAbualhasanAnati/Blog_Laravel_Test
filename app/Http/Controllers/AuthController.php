@@ -23,7 +23,7 @@ class AuthController extends Controller
         }else{
             $credentials = array('username'=>$request->login,'password'=>$request->password);
             if (Auth::attempt($credentials)) {
-                return redirect()->intended('admin')
+                return redirect()->intended(Auth::user()->role=="admin"?"/admin/users":"/posts")
                             ->withSuccess('Signed in successfully!');
             }else{
                 return redirect("/auth/login")->withErrors(['loginFail'=>'The login credintals is not valid!']);

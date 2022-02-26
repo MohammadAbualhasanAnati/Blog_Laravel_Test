@@ -18,7 +18,7 @@ use App\Http\Controllers\PostsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/posts');
 });
 
 
@@ -34,19 +34,18 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::post('logout',[AuthController::class,'postLogout'])->name('logoutPost');
 });
 
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
-    Route::get('/', [AdminController::class,'index']);
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['role:admin']], function () {
     Route::get('/users', [AdminController::class,'users']);
 });
 
 Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
     Route::get('/', [PostsController::class,'index']);
-    Route::get('/add', [PostsController::class,'add'])->middleware('admin');
-    Route::get('/view/{id}', [PostsController::class,'viewPost'])->middleware('admin');
-    Route::get('/edit/{id}', [PostsController::class,'edit'])->middleware('admin');
+    Route::get('/add', [PostsController::class,'add'])->middleware(['role:admin,writer']);
+    Route::get('/view/{id}', [PostsController::class,'viewPost'])->middleware(['role:admin,writer']);
+    Route::get('/edit/{id}', [PostsController::class,'edit'])->middleware(['role:admin,writer']);
 
-    Route::post('/add', [PostsController::class,'postAdd'])->middleware('admin');
-    Route::post('/edit', [PostsController::class,'postEdit'])->middleware('admin');
-    Route::post('/publish/{id}', [PostsController::class,'publish'])->middleware('admin');
-    Route::post('/delete/{id}', [PostsController::class,'delete'])->middleware('admin');
+    Route::post('/add', [PostsController::class,'postAdd'])->middleware(['role:admin,writer']);
+    Route::post('/edit', [PostsController::class,'postEdit'])->middleware(['role:admin,writer']);
+    Route::post('/publish/{id}', [PostsController::class,'publish'])->middleware(['role:admin']);
+    Route::post('/delete/{id}', [PostsController::class,'delete'])->middleware(['role:admin']);
 });
