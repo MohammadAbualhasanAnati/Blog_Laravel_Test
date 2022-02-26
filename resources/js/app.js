@@ -1,4 +1,9 @@
 
+window._ = require('lodash');
+
+import Popper from 'popper.js/dist/umd/popper.js';
+window.Popper = Popper;
+
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 

@@ -1,12 +1,14 @@
 <html>
 
 <head>
-    @include('admin.layout.head')
+    @include('layouts.general.head')
+    @yield('styles')
+    @yield('scripts')
 </head>
 
 <body>
     <div id="wrapper">
-        @include('admin.layout.sidebar')
+        @include('layouts.general.sidebar')
 
         <div class="container">
             @yield('content')

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,16 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class,'index']);
     Route::get('/users', [AdminController::class,'users']);
+});
+
+Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
+    Route::get('/', [PostsController::class,'index']);
+    Route::get('/add', [PostsController::class,'add'])->middleware('admin');
+    Route::get('/view/{id}', [PostsController::class,'viewPost'])->middleware('admin');
+    Route::get('/edit/{id}', [PostsController::class,'edit'])->middleware('admin');
+
+    Route::post('/add', [PostsController::class,'postAdd'])->middleware('admin');
+    Route::post('/edit', [PostsController::class,'postEdit'])->middleware('admin');
+    Route::post('/publish/{id}', [PostsController::class,'publish'])->middleware('admin');
+    Route::post('/delete/{id}', [PostsController::class,'delete'])->middleware('admin');
 });

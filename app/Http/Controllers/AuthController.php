@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $validated = $request->validate([
-            'login' => 'required:username',
+            'login' => 'required',
             'password' => 'required',
         ],['login.required'=>'The username or email is required!']);
    
