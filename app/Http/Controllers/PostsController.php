@@ -13,8 +13,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PostsController extends Controller
 {
-    private function getPosts(){
-        $posts=Post::inRandomOrder()->get();
+    private function getPosts($isAuth){
+        $posts=Post::inRandomOrder();
+        if($isAuth){
+            $posts=$posts->where('published',true);
+        }
+        $posts=$posts->get();
         $posts=$posts->map(function($post){
             $post->categories=strlen($post->categories)>0?explode(',',$post->categories):null;
             if($post->image!=null){
@@ -40,7 +44,7 @@ class PostsController extends Controller
 
 
     public function index(){
-        $posts=$this->getPosts();
+        $posts=$this->getPosts(Auth::user()===null);
         return view('posts.index',['posts'=>$posts]);
     }
 
@@ -73,7 +77,6 @@ class PostsController extends Controller
             'title' => 'required',
             'body' => 'required',
         ]);
-        return $request;
         $post=Post::where('id',$request->id)->first();
         $post->update([
             'title'=>$request->title,
