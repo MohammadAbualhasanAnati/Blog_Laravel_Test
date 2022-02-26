@@ -124,26 +124,32 @@
             <br />
             <br />
             <div class="footer">
-                @if (Auth::user()->type == 'admin')
+                @if (Auth::user() !== null)
                     <label
                         class="p-1 mb-2 text-light {{ $post->published ? 'bg-success' : 'bg-dark' }}">{{ $post->published ? 'published' : 'not published' }}</label>
-                    <div class="buttons-container">
+                @endif
+                <div class="buttons-container">
+                    @if (Auth::user()->role == 'admin')
                         <form class="form-inline" method="POST" action="/posts/publish/{{ $post->id }}">
                             @csrf
                             <button
                                 class='btn {{ $post->published ? 'btn-danger' : 'btn-success' }}'>{{ $post->published ? 'unpublish' : 'publish' }}</button>
                         </form>
+                    @endif
+                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'writer')
                         <form class="form-inline" method="GET" action="/posts/edit/{{ $post->id }}">
                             @csrf
                             <button class='btn btn-secondary'>Edit</button>
                         </form>
+                    @endif
+                    @if (Auth::user()->role == 'admin')
                         <form class="deleteForm" class="form-inline" method="POST"
                             action="/posts/delete/{{ $post->id }}">
                             @csrf
                             <button type="button" class='btn btn-danger'>Delete</button>
                         </form>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
     </div>
