@@ -20,7 +20,6 @@ class PostsController extends Controller
             if($post->image!=null){
                 $imageUrl=$post->getFirstMediaUrl('image');
                 $post->image=$imageUrl;
-                print_r($imageUrl);
             }
             return $post;
         });
@@ -28,8 +27,12 @@ class PostsController extends Controller
     }
     private function getPostById($id){
         $post=Post::where('id',$id)->first();
-        if($post!=null && $post->categories!=null){
+        if(isset($post) && $post->categories!=null){
             $post->categories=strlen($post->categories)>0?explode(',',$post->categories):null;
+        }
+        if(isset($post->image)){
+            $imageUrl=$post->getFirstMediaUrl('image');
+            $post->image=$imageUrl;
         }
         
         return $post;
@@ -70,6 +73,7 @@ class PostsController extends Controller
             'title' => 'required',
             'body' => 'required',
         ]);
+        return $request;
         $post=Post::where('id',$request->id)->first();
         $post->update([
             'title'=>$request->title,
@@ -77,11 +81,9 @@ class PostsController extends Controller
             'categories'=>$request->categories,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){
-            $media=Media::whereName($post->image);
-            return $media;
-            $imageName = time().$request->image;  
+            $imageName = time().$request->file('image')->getClientOriginalName();  
             $post->addMediaFromRequest('image')->usingName($imageName)->toMediaCollection('image');
-            $post->image=$imageName;
+            $post->update(['image'=>$imageName]);
             $post->save;
         }
         return view('posts.add_edit')->with(['success'=>"The post is edited successfully!",'post'=>$this->getPostById($request->id)]);
@@ -101,7 +103,7 @@ class PostsController extends Controller
     public function publish($id){
         $post=Post::where('id',$id)->first();
         $post->update(['published'=>(!$post->published)]);
-        return redirect("/posts/$post->id");
+        return redirect("/posts/view/$post->id");
     }
 
 }
