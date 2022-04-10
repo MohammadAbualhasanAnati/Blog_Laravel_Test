@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/posts');
 });
 
 
@@ -33,6 +34,18 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::post('logout',[AuthController::class,'postLogout'])->name('logoutPost');
 });
 
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
-    Route::resource('/', AdminController::class);
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['role:admin']], function () {
+    Route::get('/users', [AdminController::class,'users']);
+});
+
+Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
+    Route::get('/', [PostsController::class,'index']);
+    Route::get('/add', [PostsController::class,'add'])->middleware(['role:admin,writer']);
+    Route::get('/view/{id}', [PostsController::class,'viewPost'])->middleware(['role:admin,writer']);
+    Route::get('/edit/{id}', [PostsController::class,'edit'])->middleware(['role:admin,writer']);
+
+    Route::post('/add', [PostsController::class,'postAdd'])->middleware(['role:admin,writer']);
+    Route::post('/edit', [PostsController::class,'postEdit'])->middleware(['role:admin,writer']);
+    Route::post('/publish/{id}', [PostsController::class,'publish'])->middleware(['role:admin']);
+    Route::post('/delete/{id}', [PostsController::class,'delete'])->middleware(['role:admin']);
 });
